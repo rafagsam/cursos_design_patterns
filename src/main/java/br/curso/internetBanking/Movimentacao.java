@@ -2,6 +2,7 @@ package br.curso.internetBanking;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.function.Consumer;
 
@@ -9,7 +10,7 @@ public class Movimentacao {
 	private Cliente cliente ;
 	private Conta conta;
 	private TipoMovimentacao tipoMovimentacao;
-	private LocalDate dataMovimentacao;
+	private LocalDateTime dataMovimentacao;
 	private BigDecimal valor;
 	
 	private Movimentacao(Builder builder) {
@@ -25,7 +26,7 @@ public class Movimentacao {
 		public Cliente cliente ;
 		public  Conta conta;
 		public  TipoMovimentacao tipoMovimentacao;
-		public LocalDate dataMovimentacao;
+		public LocalDateTime dataMovimentacao;
 		public BigDecimal valor;
 		private Consumer<Builder> consumer;
 		
@@ -70,11 +71,11 @@ public class Movimentacao {
 		this.tipoMovimentacao = tipoMovimentacao;
 	}
 
-	public LocalDate getDataMovimentacao() {
+	public LocalDateTime getDataMovimentacao() {
 		return dataMovimentacao;
 	}
 
-	public void setDataMovimentacao(LocalDate dataMovimentacao) {
+	public void setDataMovimentacao(LocalDateTime dataMovimentacao) {
 		this.dataMovimentacao = dataMovimentacao;
 	}
 
@@ -88,7 +89,7 @@ public class Movimentacao {
 
 	@Override
 	public String toString() {
-		return "Movimentacao [cliente=" + cliente.toString() + ", conta=" + conta.toString() + ", tipoMovimentacao=" + tipoMovimentacao
+		return "Movimentacao [cliente=" + cliente + ", conta=" + conta.toString() + ", tipoMovimentacao=" + tipoMovimentacao
 				+ ", dataMovimentacao=" + dataMovimentacao.format(DateTimeFormatter.ISO_DATE_TIME) + "]";
 	}
 

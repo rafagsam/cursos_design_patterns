@@ -1,7 +1,7 @@
 package br.curso.internetBanking;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.temporal.ChronoField;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -31,7 +31,7 @@ public abstract class Conta {
 		Movimentacao movimentacao = new Movimentacao.Builder().set(m -> {
 			m.conta = this;
 			m.tipoMovimentacao = TipoMovimentacao.DEPOSITO;
-			m.dataMovimentacao = LocalDate.now();
+			m.dataMovimentacao = LocalDateTime.now();
 			m.valor = valor;
 		}).build();
 		
@@ -47,7 +47,7 @@ public abstract class Conta {
 			Movimentacao movimentacao = new Movimentacao.Builder().set(m -> {
 				m.conta = this;
 				m.tipoMovimentacao = TipoMovimentacao.SAQUE;
-				m.dataMovimentacao = LocalDate.now();
+				m.dataMovimentacao = LocalDateTime.now();
 				m.valor = valor;
 			}).build();
 			this.movimentacoes.add(movimentacao);
@@ -56,8 +56,8 @@ public abstract class Conta {
 
 	private boolean verificaPodeSacar(BigDecimal valor) {
 		if (LIMITE_SAQUE_HORARIO.compareTo(valor) < 0 &&
-				(LocalDate.now().getLong(ChronoField.HOUR_OF_DAY) < LIMITE_HORA_SAQUE_INI ||
-				LocalDate.now().getLong(ChronoField.HOUR_OF_DAY) > LIMITE_HORA_SAQUE_FIM)) {
+				(LocalDateTime.now().getLong(ChronoField.HOUR_OF_DAY) < LIMITE_HORA_SAQUE_INI ||
+				 LocalDateTime.now().getLong(ChronoField.HOUR_OF_DAY) > LIMITE_HORA_SAQUE_FIM)) {
 			return false;
 		}
 		return true;
@@ -80,6 +80,18 @@ public abstract class Conta {
 		this.movimentacoes.stream()
 			.sorted(Comparator.comparing(Movimentacao::getDataMovimentacao))
 			.forEach(System.out::println);
+	}
+	public Long getId() {
+		return id;
+	}
+	public void setId(Long id) {
+		this.id = id;
+	}
+	public BigDecimal getSaldo() {
+		return saldo;
+	}
+	public void setSaldo(BigDecimal saldo) {
+		this.saldo = saldo;
 	}
 	
 	

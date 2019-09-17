@@ -11,5 +11,11 @@ public class ContaCorrente extends Conta {
 
 	public void setLimiteCredito(BigDecimal limiteCredito) {
 		this.limiteCredito = limiteCredito;
-	}	
+	}
+
+	@Override
+	public void accept(TaxaContaVisitor visitor) {
+		visitor.visitContaCorrente(this);
+	}
+	
 }

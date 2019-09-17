@@ -40,7 +40,6 @@ public class Movimentacao {
 			super();
 		}
 
-
 		public Movimentacao build() {
 			this.consumer.accept(this);
 			return new Movimentacao(this);
@@ -90,7 +89,7 @@ public class Movimentacao {
 	@Override
 	public String toString() {
 		return "Movimentacao [cliente=" + cliente + ", conta=" + conta.toString() + ", tipoMovimentacao=" + tipoMovimentacao
-				+ ", dataMovimentacao=" + dataMovimentacao.format(DateTimeFormatter.ISO_DATE_TIME) + "]";
+				+ ", dataMovimentacao=" + dataMovimentacao.format(DateTimeFormatter.ISO_DATE_TIME) + ", valor=" + valor.toPlainString() +"]";
 	}
 
 }

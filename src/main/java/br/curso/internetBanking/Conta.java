@@ -7,22 +7,24 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
-public abstract class Conta {
+public abstract class Conta implements TaxaConta {
 	private int LIMITE_HORA_SAQUE_INI = 6;
 	private int LIMITE_HORA_SAQUE_FIM = 22;
 	private BigDecimal LIMITE_SAQUE_HORARIO = new BigDecimal(1000);
 	
 	private BigDecimal LIMITE_NOTIFICACAO = new BigDecimal(50000);
-	private List<Movimentacao> movimentacoes= new ArrayList<>();
+	protected List<Movimentacao> movimentacoes= new ArrayList<>();
 	private List<MovimentacaoObserver> observadoresMovivemtacao = new ArrayList<>();
 	
 	private Long id;
 	private BigDecimal saldo = BigDecimal.ZERO;
 	
+	private Cliente cliente;
+	
 	protected void credito(BigDecimal valor) {
 		this.saldo = this.saldo.add(valor);
 	}
-	private void debito(BigDecimal valor) {
+	protected void debito(BigDecimal valor) {
 		this.saldo = this.saldo.subtract(valor);
 	}
 	
@@ -35,11 +37,14 @@ public abstract class Conta {
 			m.valor = valor;
 		}).build();
 		
+		movimentaConta(movimentacao);
+	
+	}
+	protected void movimentaConta(Movimentacao movimentacao) {
 		this.movimentacoes.add(movimentacao);
-		if (valor.compareTo(LIMITE_NOTIFICACAO) > 0 ) {
+		if (movimentacao.getValor().compareTo(LIMITE_NOTIFICACAO) > 0 ) {
 			this.notificarMovimentacao(movimentacao);
 		}
-	
 	}
 	public void saque(BigDecimal valor) {		
 		if (verificaPodeSacar(valor)) {
@@ -50,7 +55,19 @@ public abstract class Conta {
 				m.dataMovimentacao = LocalDateTime.now();
 				m.valor = valor;
 			}).build();
-			this.movimentacoes.add(movimentacao);
+			this. movimentaConta(movimentacao);
+		}
+	}
+	public void taxar(BigDecimal valor) {		
+		if (verificaPodeSacar(valor)) {
+			this.debito(valor);
+			Movimentacao movimentacao = new Movimentacao.Builder().set(m -> {
+				m.conta = this;
+				m.tipoMovimentacao = TipoMovimentacao.COBRANCA;
+				m.dataMovimentacao = LocalDateTime.now();
+				m.valor = valor;
+			}).build();
+			this.movimentaConta(movimentacao);
 		}
 	}
 
@@ -94,5 +111,7 @@ public abstract class Conta {
 		this.saldo = saldo;
 	}
 	
-	
+	public void calculaRentabilidade() {
+		//Do nothing
+	}
 }

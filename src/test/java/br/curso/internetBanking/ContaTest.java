@@ -7,7 +7,6 @@ import java.math.BigDecimal;
 import org.junit.jupiter.api.Test;
 
 public class ContaTest {
-
 	@Test
 	public void deveDepositarConta() {
 		Conta conta = new ContaCorrente();

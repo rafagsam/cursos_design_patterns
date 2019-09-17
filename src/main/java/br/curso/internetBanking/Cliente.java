@@ -27,20 +27,16 @@ public class Cliente {
 		public String endereco;
 		public String telefone;
 		public List<Conta> contas = new ArrayList<>();
-		
+	
 		private Consumer<Builder> consumer;
 		
 		public Builder set(Consumer<Builder> consumer) {
 			this.consumer = consumer;
 			return this;
 		}
-		
-		
 		public Builder() {
 			super();
 		}
-
-
 		public Cliente build() {
 			this.consumer.accept(this);
 			return new Cliente(this);
@@ -51,6 +47,46 @@ public class Cliente {
 	public String toString() {
 		return "Cliente [nome=" + nome + ", sobrenome=" + sobrenome + ", endereco=" + endereco + ", telefone="
 				+ telefone + ", contas=" + contas + "]";
+	}
+
+	public String getNome() {
+		return nome;
+	}
+
+	public void setNome(String nome) {
+		this.nome = nome;
+	}
+
+	public String getSobrenome() {
+		return sobrenome;
+	}
+
+	public void setSobrenome(String sobrenome) {
+		this.sobrenome = sobrenome;
+	}
+
+	public String getEndereco() {
+		return endereco;
+	}
+
+	public void setEndereco(String endereco) {
+		this.endereco = endereco;
+	}
+
+	public String getTelefone() {
+		return telefone;
+	}
+
+	public void setTelefone(String telefone) {
+		this.telefone = telefone;
+	}
+
+	public List<Conta> getContas() {
+		return contas;
+	}
+
+	public void setContas(List<Conta> contas) {
+		this.contas = contas;
 	}
 
 }

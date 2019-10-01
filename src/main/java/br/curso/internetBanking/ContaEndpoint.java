@@ -1,6 +1,7 @@
 package br.curso.internetBanking;
 
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,7 +45,7 @@ public class ContaEndpoint {
 	
 	@ApiOperation(value="Lista Contas de um cliente .", response = ContaDTO.class)
 	@ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Conta Retornoada"),
+            @ApiResponse(code = 200, message = "Lista de Contas do cliente", response = ContaDTO.class, responseContainer = "List"),
             @ApiResponse(code = 500, message = "Foi gerada uma exceção")
      })
 	@ApiParam(value = "Identificador do cliente que se quer as contas cadastradas", name =  "idCliente")

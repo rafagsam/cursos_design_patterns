@@ -2,7 +2,12 @@ package br.curso.internetBanking;
 
 import java.math.BigDecimal;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+
+@Entity
 public class ContaCorrente extends Conta {
+	@Column
 	private BigDecimal limiteCredito;
 
 	public BigDecimal getLimiteCredito() {

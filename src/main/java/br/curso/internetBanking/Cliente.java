@@ -4,12 +4,37 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 
-public class Cliente {	
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
+@Entity
+public class Cliente {
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
+	
+	@Column
 	private String nome;
+	@Column
 	private String sobrenome;
+	@Column
 	private String endereco;
+	@Column
 	private String telefone;
 	
+	public Cliente() {
+		super();
+	}
+
+	@OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL)
+	@JsonManagedReference
 	private List<Conta> contas;
 	
 	private Cliente(Builder builder) {
@@ -87,6 +112,14 @@ public class Cliente {
 
 	public void setContas(List<Conta> contas) {
 		this.contas = contas;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
 	}
 
 }

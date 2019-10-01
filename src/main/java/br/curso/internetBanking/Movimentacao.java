@@ -1,20 +1,40 @@
 package br.curso.internetBanking;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.function.Consumer;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
+@Entity
 public class Movimentacao {
-	private Cliente cliente ;
+	
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
+	
+	@ManyToOne
+	@JoinColumn(name="conta_id")
+	@JsonBackReference
 	private Conta conta;
+	
 	private TipoMovimentacao tipoMovimentacao;
 	private LocalDateTime dataMovimentacao;
 	private BigDecimal valor;
 	
+	public Movimentacao() {
+		super();
+	}
+
 	private Movimentacao(Builder builder) {
-		this.cliente = builder.cliente;
 		this.conta = builder.conta;
 		this.dataMovimentacao = builder.dataMovimentacao;
 		this.tipoMovimentacao = builder.tipoMovimentacao;
@@ -23,9 +43,8 @@ public class Movimentacao {
 
 
 	public static class Builder {
-		public Cliente cliente ;
-		public  Conta conta;
-		public  TipoMovimentacao tipoMovimentacao;
+		public Conta conta;
+		public TipoMovimentacao tipoMovimentacao;
 		public LocalDateTime dataMovimentacao;
 		public BigDecimal valor;
 		private Consumer<Builder> consumer;
@@ -44,14 +63,6 @@ public class Movimentacao {
 			this.consumer.accept(this);
 			return new Movimentacao(this);
 		}
-	}
-
-	public Cliente getCliente() {
-		return cliente;
-	}
-
-	public void setCliente(Cliente cliente) {
-		this.cliente = cliente;
 	}
 
 	public Conta getConta() {
@@ -88,8 +99,16 @@ public class Movimentacao {
 
 	@Override
 	public String toString() {
-		return "Movimentacao [cliente=" + cliente + ", conta=" + conta.toString() + ", tipoMovimentacao=" + tipoMovimentacao
+		return "Movimentacao [cliente=" + conta.getCliente().toString() + ", conta=" + conta.toString() + ", tipoMovimentacao=" + tipoMovimentacao
 				+ ", dataMovimentacao=" + dataMovimentacao.format(DateTimeFormatter.ISO_DATE_TIME) + ", valor=" + valor.toPlainString() +"]";
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
 	}
 
 }

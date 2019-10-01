@@ -3,8 +3,13 @@ package br.curso.internetBanking;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+
+@Entity
 public class ContaInvestimento extends Conta {
 	
+	@Column
 	private TipoAplicacao tipoAplicacao;
 
 	public ContaInvestimento(TipoAplicacao tipoAplicacao) {

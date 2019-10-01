@@ -9,7 +9,7 @@ public class COAF implements MovimentacaoObserver{
 	}
 	
 	public void notificarMovimentacao(Movimentacao movimentacao) {
-		System.out.println("Movimentação notificada: ");
+		System.out.println("MovimentaÃ§Ã£o notificada: ");
 		System.out.println(movimentacao);
 	}
 	

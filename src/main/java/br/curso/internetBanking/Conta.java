@@ -7,20 +7,52 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.DiscriminatorColumn;
+import javax.persistence.DiscriminatorType;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.Transient;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
+@Entity
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name="tipoConta", discriminatorType=DiscriminatorType.STRING, length=100)
 public abstract class Conta implements TaxaConta {
+	@Transient
 	private int LIMITE_HORA_SAQUE_INI = 6;
+	@Transient
 	private int LIMITE_HORA_SAQUE_FIM = 22;
+	@Transient
 	private BigDecimal LIMITE_SAQUE_HORARIO = new BigDecimal(1000);
-	
+	@Transient
 	private BigDecimal LIMITE_NOTIFICACAO = new BigDecimal(50000);
-	protected List<Movimentacao> movimentacoes= new ArrayList<>();
-	private List<MovimentacaoObserver> observadoresMovivemtacao = new ArrayList<>();
+	@Transient
+	private List<MovimentacaoObserver> observadoresMovivmentacao = new ArrayList<>();
 	
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+	
+	@Column
 	private BigDecimal saldo = BigDecimal.ZERO;
-	
+	@ManyToOne
+	@JoinColumn(name = "cliente_id")
+	@JsonBackReference
 	private Cliente cliente;
-	
+
+	@OneToMany(mappedBy = "conta", cascade = CascadeType.ALL)
+	protected List<Movimentacao> movimentacoes= new ArrayList<>();
+
 	protected void credito(BigDecimal valor) {
 		this.saldo = this.saldo.add(valor);
 	}
@@ -86,11 +118,11 @@ public abstract class Conta implements TaxaConta {
 	}
 	
 	public void adicionarObservador(MovimentacaoObserver observador) {
-		this.observadoresMovivemtacao.add(observador);
+		this.observadoresMovivmentacao.add(observador);
 	}
 	
 	private void notificarMovimentacao(Movimentacao movimentacao) {		
-		this.observadoresMovivemtacao.forEach((obs) -> obs.notificarMovimentacao(movimentacao));
+		this.observadoresMovivmentacao.forEach((obs) -> obs.notificarMovimentacao(movimentacao));
 	}
 	
 	public void imprimeExtratoCompleto() {
@@ -113,5 +145,17 @@ public abstract class Conta implements TaxaConta {
 	
 	public void calculaRentabilidade() {
 		//Do nothing
+	}
+	public List<Movimentacao> getMovimentacoes() {
+		return movimentacoes;
+	}
+	public void setMovimentacoes(List<Movimentacao> movimentacoes) {
+		this.movimentacoes = movimentacoes;
+	}
+	public Cliente getCliente() {
+		return cliente;
+	}
+	public void setCliente(Cliente cliente) {
+		this.cliente = cliente;
 	}
 }

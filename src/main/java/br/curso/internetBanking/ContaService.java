@@ -45,17 +45,18 @@ public class ContaService {
 	
 	public void deposito(Long idConta, BigDecimal valor) {
 		var contaDB = contaRepository.findById(idConta);
-		
-		contaDB.get().deposito(valor);
-		
+		Conta c = contaDB.get();
+		c.adicionarObservador(COAF.getInstance());
+		c.deposito(valor);
 		contaRepository.save(contaDB.get());		
 		
 	}
 	
 	public void saque(Long idConta, BigDecimal valor) {
 		var contaDB = contaRepository.findById(idConta);
-		
-		contaDB.get().saque(valor);
+		Conta c = contaDB.get();
+		c.adicionarObservador(COAF.getInstance());
+		c.saque(valor);
 		contaRepository.save(contaDB.get());		
 	}
 	

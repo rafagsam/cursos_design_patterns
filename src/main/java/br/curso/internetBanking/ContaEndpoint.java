@@ -112,7 +112,7 @@ public class ContaEndpoint {
 	}
 	
 	@GetMapping(path="conta/{id}/extrato")
-    public ResponseEntity<?> saque(@PathVariable("id") Long idConta) {
+    public ResponseEntity<?> extrato(@PathVariable("id") Long idConta) {
         return new ResponseEntity<>(contaService.recuperarExtratoPeloIdConta(idConta),HttpStatus.OK);
 	}
 
